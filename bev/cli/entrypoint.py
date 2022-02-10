@@ -1,6 +1,5 @@
 import typer
-from typint import List
-from argparse import ArgumentParser
+from typing import List
 
 from .add import add
 from .blame import blame
@@ -10,7 +9,7 @@ from .pull import pull, gather, PULL_MODES
 from .storage import init_storage
 from .update import update
 
-app = typer.typer()
+app = typer.Typer()
 
 
 @app.command(name="init")
@@ -79,7 +78,3 @@ def entrypoint():
     app()
 
 
-def add_storage_functions(parser: ArgumentParser):
-    subparsers = parser.add_subparsers()
-    new = subparsers.add_parser('init')
-    new.set_defaults(callback=init_storage)
