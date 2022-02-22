@@ -1,14 +1,19 @@
-from typing import Union
-
+import typer
 import yaml
 
 from bev.config import find_repo_root, CONFIG, load_config
 from bev.utils import RepositoryNotFound
 from connectome.storage.config import DiskConfig, STORAGE_CONFIG_NAME, root_params
 from connectome.storage.utils import mkdir
+from .app import app
 
 
-def init(repository: str = '.', permissions: str = None, group: Union[int, str] = None):
+@app.command()
+def init(
+        repository: str = typer.Argument('.'),
+        permissions: str = typer.Option(None, "--permissions", "-p"),
+        group: str = typer.Option(None, "--group", "-g")
+        ):
     root = find_repo_root(repository)
     if root is None:
         raise RepositoryNotFound(f'{CONFIG} files not found in current folder\'s parents')

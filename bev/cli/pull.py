@@ -1,4 +1,5 @@
 import shutil
+import typer
 
 from pathlib import Path
 
@@ -7,9 +8,15 @@ from tqdm import tqdm
 from ..shortcuts import get_current_repo
 from ..hash import is_hash, to_hash, from_hash, load_tree, dispatch_hash, TreeHash
 from .add import save_tree
+from .app import app
 
 
-def pull(source: str, destination: str, mode: str):
+@app.command()
+def pull(
+        source: str = typer.Argument(...),
+        destination: str = typer.Argument(...),
+        mode: str = typer.Option(..., "--mode", "-m", prompt=True, help='how to pull the files from the hash.')
+        ):
     repo = get_current_repo()
 
     assert mode in PULL_MODES, mode
@@ -44,7 +51,11 @@ PULL_MODES = {
 }
 
 
-def gather(source: str, destination: str):
+@app.command()
+def gather(
+        source: str = typer.Argument(...),
+        destination: str = typer.Argument(...)
+        ):
     repo = get_current_repo()
 
     source, destination = Path(source), Path(destination)

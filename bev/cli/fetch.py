@@ -1,6 +1,9 @@
-from typing import Sequence
-from pathlib import Path
+import typer
 
+from pathlib import Path
+from typing import List
+
+from .app import app
 from ..interface import Repository
 from ..shortcuts import get_consistent_repo
 from ..hash import is_hash, to_hash, load_tree, load_key, strip_tree
@@ -23,7 +26,11 @@ def _fetch(repo: Repository, path: Path):
         raise HashNotFound(f'Could not fetch {len(missing)} keys from remote.')
 
 
-def fetch(paths: Sequence[str], context: str = '.'):
+@app.command()
+def fetch(
+        paths: List[str] = typer.Argument(...),
+        context: str = typer.Option('.', "--context", "-c")
+        ):
     repo = get_consistent_repo([context, *paths])
     for path in paths:
         _fetch(repo, Path(context) / path)

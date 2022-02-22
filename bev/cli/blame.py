@@ -1,14 +1,22 @@
+import typer
+
 from pathlib import Path
 from datetime import datetime
 
 from tqdm import tqdm
+from typing import Optional
 
+from .app import app
 from ..hash import from_hash, is_hash
 from ..shortcuts import get_current_repo
 from ..utils import call
 
 
-def blame(path: Path, relative: str):
+@app.command()
+def blame(
+        path: Optional[Path] = typer.Argument(...),
+        relative: str = typer.Argument(...),
+        ):
     repo = get_current_repo()
     path = Path(path).resolve().relative_to(repo.root)
     relative = str(relative)

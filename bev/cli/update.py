@@ -1,12 +1,20 @@
 import shutil
+import typer
 from pathlib import Path
 
 from ..shortcuts import get_consistent_repo
 from ..hash import is_hash, load_tree, load_tree_key
 from .add import add_folder, save_tree
+from .app import app
 
 
-def update(source: str, destination: str, keep: bool, overwrite: bool):
+@app.command()
+def update(
+        source: str = typer.Argument(...),
+        destination: str = typer.Argument(...),
+        keep: bool = typer.Option(False, "--keep", "-k"),
+        overwrite: bool = typer.Option(False, "--overwrite", "-o")
+        ):
     source, destination = Path(source), Path(destination)
     if not is_hash(destination):
         raise ValueError('The destination must be a hash.')

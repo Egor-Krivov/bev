@@ -1,4 +1,5 @@
 import json
+import typer
 import shutil
 import os
 from collections import OrderedDict
@@ -7,7 +8,8 @@ from typing import Optional
 
 from tqdm import tqdm
 
-from ..interface import Repository, PathLike
+from .app import app
+from ..interface import Repository
 from ..shortcuts import get_consistent_repo
 from ..hash import is_hash, to_hash
 
@@ -71,7 +73,13 @@ def add_folder(repo: Repository, source: Path, destination: Optional[Path], keep
     return result
 
 
-def add(source: PathLike, destination: PathLike, keep: bool, context: str = '.'):
+@app.command()
+def add(
+        source: str = typer.Argument(..., help='a list of files/folders to be added'),
+        destination: str = typer.Argument(..., help='the final location of the files/folders'),
+        keep: bool = typer.Option(False, "--keep", "-k"),
+        context: str = typer.Option(None, "--context", "-c")
+        ):
     source, destination = Path(source), Path(destination)
 
     if not source.exists():
