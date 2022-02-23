@@ -36,7 +36,7 @@ setup(
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
-            'bev = bev.cli.init:app',
+            'bev = bev.cli.entrypoint:entrypoint',
         ],
     },
 )

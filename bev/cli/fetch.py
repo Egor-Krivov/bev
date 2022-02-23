@@ -1,7 +1,7 @@
 import typer
 
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from .app import app
 from ..interface import Repository
